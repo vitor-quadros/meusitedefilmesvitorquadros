@@ -84,6 +84,12 @@ function renderComments(movieId) {
     list.appendChild(div);
   });
 }
+// Controle do carrossel
+function scrollMovies(direction) {
+  const row = document.getElementById("movie-list");
+  const cardWidth = document.querySelector(".movie-card").offsetWidth + 15; // largura + gap
+  row.scrollBy({ left: direction * cardWidth * 3, behavior: "smooth" });
+}
 
 updateUserUI();
 

@@ -1,10 +1,13 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CineBR</title>
-  <link rel="stylesheet" href="style.css">
+<main>
+  <h2>Filmes Brasileiros</h2>
+  <div class="carousel">
+    <button class="arrow left" onclick="scrollMovies(-1)">&#10094;</button>
+    <div class="movie-row" id="movie-list"></div>
+    <button class="arrow right" onclick="scrollMovies(1)">&#10095;</button>
+  </div>
+</main>
 </head>
 <body>
   <header>

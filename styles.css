@@ -1,87 +1,77 @@
-body {
-  font-family: Arial, sans-serif;
-  background: #0f0f0f;
-  color: #fff;
-  margin: 0;
+/* ====== Carrossel ====== */
+.carousel {
+  position: relative;
+  padding: 20px 40px;
 }
 
-header {
-  background: #111;
-  padding: 15px;
+.movie-row {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-nav a {
-  color: #fff;
-  margin-right: 10px;
-  text-decoration: none;
-}
-
-h1, h2 {
-  margin: 20px;
-}
-
-.movie-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-  gap: 20px;
-  padding: 20px;
+  overflow-x: hidden; /* escondemos a barra */
+  scroll-behavior: smooth;
+  gap: 15px;
 }
 
 .movie-card {
+  flex: 0 0 auto;
+  width: 180px;
   cursor: pointer;
-  text-align: center;
-  transition: transform 0.3s;
+  transition: transform 0.3s, filter 0.3s;
+  position: relative;
 }
 
 .movie-card img {
   width: 100%;
-  border-radius: 10px;
+  border-radius: 8px;
+  transition: transform 0.3s, filter 0.3s;
 }
 
-.movie-card:hover {
-  transform: scale(1.05);
+.movie-card:hover img {
+  transform: scale(1.08);
+  filter: brightness(1.2);
 }
 
-.poster-large {
-  width: 300px;
-  float: left;
-  margin-right: 20px;
-  border-radius: 10px;
+.movie-card h3 {
+  text-align: center;
+  margin-top: 8px;
+  font-size: 14px;
 }
 
-#comments-section {
-  clear: both;
-  margin: 20px;
-}
-
-.comment {
-  background: #222;
-  padding: 10px;
-  margin: 5px 0;
-  border-radius: 6px;
-}
-
-button {
-  background: #e50914;
+/* ====== Setas ====== */
+.arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(20, 20, 20, 0.7);
+  border: none;
   color: white;
-  padding: 8px 12px;
-  border: none;
-  cursor: pointer;
-  border-radius: 5px;
-}
-
-button:hover {
-  background: #f40612;
-}
-
-textarea {
-  width: 100%;
-  height: 60px;
-  margin-bottom: 10px;
-  border-radius: 5px;
-  border: none;
+  font-size: 32px;
   padding: 10px;
+  cursor: pointer;
+  border-radius: 50%;
+  transition: background 0.3s;
+  z-index: 10;
+}
+
+.arrow:hover {
+  background: rgba(229, 9, 20, 0.8);
+}
+
+.arrow.left {
+  left: 0;
+}
+
+.arrow.right {
+  right: 0;
+}
+
+/* ====== Responsividade ====== */
+@media (max-width: 768px) {
+  .movie-card {
+    width: 140px;
+  }
+
+  .arrow {
+    font-size: 24px;
+    padding: 6px;
+  }
 }
