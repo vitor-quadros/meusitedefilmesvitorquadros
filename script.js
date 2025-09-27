@@ -1,46 +1,90 @@
-const movies = [
-  {
-    id: '1',
-    title: 'Mussum, o Filmis',
-    poster: 'https://upload.wikimedia.org/wikipedia/pt/0/0b/Mussum_o_Filmis.jpg',
-    description: 'A história do comediante e músico Mussum, desde sua infância até sua ascensão no humor brasileiro.',
-    cast: ['Aílton Graça', 'Yuri Marçal', 'Cacau Protásio'],
-    trailer: 'https://www.youtube.com/embed/EYfvYfZZSsU',
-  },
-  {
-    id: '2',
-    title: 'Desapega!',
-    poster: 'https://upload.wikimedia.org/wikipedia/pt/0/0e/Desapega%21.jpg',
-    description: 'Comédia romântica que aborda o vício em compras e os desafios da maternidade.',
-    cast: ['Glória Pires', 'Maísa Silva', 'Marcos Pasquim'],
-    trailer: 'https://www.youtube.com/embed/PCfmPEu0VuU',
-  },
-  {
-    id: '3',
-    title: 'Propriedade',
-    poster: 'https://upload.wikimedia.org/wikipedia/pt/0/0e/Propriedade.jpg',
-    description: 'Drama psicológico que explora o trauma e a busca por refúgio.',
-    cast: ['Malu Galli', 'Jackson Antunes', 'Carina Sacchelli'],
-    trailer: 'https://www.youtube.com/embed/PCfmPEu0VuU',
-  },
-  {
-    id: '4',
-    title: 'Estranho Caminho',
-    poster: 'https://upload.wikimedia.org/wikipedia/pt/0/0e/Estranho_Caminho.jpg',
-    description: 'Fantasia dramática que mistura realidade e ficção.',
-    cast: ['Bruno Torres', 'Maria Eduarda Esteves', 'João António'],
-    trailer: 'https://www.youtube.com/embed/PCfmPEu0VuU',
-  },
-  {
-    id: '5',
-    title: 'Barraco de Família',
-    poster: 'https://upload.wikimedia.org/wikipedia/pt/0/0e/Barraco_de_Fam%C3%ADlia.jpg',
-    description: 'Comédia que retrata o cotidiano de uma família brasileira.',
-    cast: ['Tatá Werneck', 'Ingrid Guimarães', 'Marcos Pasquim'],
-    trailer: 'https://www.youtube.com/embed/PCfmPEu0VuU',
-  },
-  {
-    id: '6',
-    title:
-::contentReference[oaicite:0]{index=0}
+// Mostrar usuário logado
+function updateUserUI() {
+  const user = localStorage.getItem("cineUser");
+  const loginLink = document.getElementById("login-link");
+  const userInfo = document.getElementById("user-info");
+  if (user && userInfo) {
+    loginLink.style.display = "none";
+    userInfo.innerText = "Olá, " + user + " | Sair";
+    userInfo.style.cursor = "pointer";
+    userInfo.onclick = () => { localStorage.removeItem("cineUser"); location.reload(); };
+  }
+}
+
+// Login simples
+function login() {
+  const username = document.getElementById("username").value;
+  if (username.trim() !== "") {
+    localStorage.setItem("cineUser", username);
+    window.location.href = "index.html";
+  }
+}
+
+// Renderizar filmes na home
+if (document.getElementById("movie-list")) {
+  const movieList = document.getElementById("movie-list");
+  movies.forEach(m => {
+    const div = document.createElement("div");
+    div.className = "movie-card";
+    div.innerHTML = `<img src="${m.poster}" alt="${m.title}"><h3>${m.title}</h3>`;
+    div.onclick = () => { window.location.href = `movie.html?id=${m.id}`; };
+    movieList.appendChild(div);
+  });
+}
+
+// Detalhes do filme
+if (window.location.pathname.includes("movie.html")) {
+  const params = new URLSearchParams(window.location.search);
+  const id = params.get("id");
+  const movie = movies.find(m => m.id == id);
+
+  if (movie) {
+    document.getElementById("movie-title").innerText = movie.title;
+    document.getElementById("movie-details").innerHTML = `
+      <img src="${movie.poster}" alt="${movie.title}" class="poster-large">
+      <p><strong>Descrição:</strong> ${movie.description}</p>
+      <p><strong>Elenco:</strong> ${movie.cast}</p>
+      <iframe width="560" height="315" src="${movie.trailer}" frameborder="0" allowfullscreen></iframe>
+    `;
+  }
+
+  const user = localStorage.getItem("cineUser");
+  if (user) {
+    document.getElementById("comment-form").style.display = "block";
+    document.getElementById("login-message").style.display = "none";
+  }
+
+  renderComments(id);
+}
+
+// Comentários
+function addComment() {
+  const text = document.getElementById("comment-text").value;
+  if (text.trim() === "") return;
+
+  const params = new URLSearchParams(window.location.search);
+  const id = params.get("id");
+  const user = localStorage.getItem("cineUser");
+  const comments = JSON.parse(localStorage.getItem("comments_" + id) || "[]");
+
+  comments.push({ user, text });
+  localStorage.setItem("comments_" + id, JSON.stringify(comments));
+  document.getElementById("comment-text").value = "";
+  renderComments(id);
+}
+
+function renderComments(movieId) {
+  const list = document.getElementById("comments-list");
+  list.innerHTML = "";
+  const comments = JSON.parse(localStorage.getItem("comments_" + movieId) || "[]");
+  comments.forEach(c => {
+    const div = document.createElement("div");
+    div.className = "comment";
+    div.innerHTML = `<strong>${c.user}:</strong> ${c.text}`;
+    list.appendChild(div);
+  });
+}
+
+updateUserUI();
+
  

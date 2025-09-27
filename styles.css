@@ -1,49 +1,87 @@
-* { margin: 0; padding: 0; box-sizing: border-box; }
-body { font-family: 'Arial', sans-serif; background: #141414; color: white; overflow-x: hidden; }
-header { background: rgba(0,0,0,0.8); padding: 1rem; position: fixed; width: 100%; z-index: 10; }
-nav { display: flex; justify-content: space-between; align-items: center; }
-.logo { font-size: 1.5rem; font-weight: bold; color: #e50914; }
-.auth button { background: #e50914; color: white; border: none; padding: 0.5rem 1rem; margin-left: 1rem; cursor: pointer; border-radius: 4px; transition: background 0.3s; }
-.auth button:hover { background: #b20710; transform: scale(1.05); }
-
-.hero { background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('https://via.placeholder.com/1920x1080/000/fff?text=Netflix+BR'); background-size: cover; padding: 150px 20px 100px; text-align: center; }
-.hero h1 { font-size: 3rem; margin-bottom: 1rem; }
-.hero p { font-size: 1.2rem; }
-
-.movies-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; padding: 2rem; max-width: 1200px; margin: 0 auto; }
-.movie-poster { position: relative; cursor: pointer; transition: transform 0.3s, box-shadow 0.3s; border-radius: 8px; overflow: hidden; }
-.movie-poster:hover { transform: scale(1.1); box-shadow: 0 10px 20px rgba(255,0,0,0.5); }
-.movie-poster img { width: 100%; height: 300px; object-fit: cover; }
-.movie-title { position: absolute; bottom: 0; background: rgba(0,0,0,0.8); width: 100%; padding: 0.5rem; text-align: center; }
-
-/* Página de Detalhes */
-#movieDetails { padding: 2rem; max-width: 800px; margin: 0 auto; animation: fadeIn 0.5s; }
-@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-.trailer { width: 100%; height: 400px; margin: 1rem 0; }
-.cast, .description { margin: 1rem 0; }
-.rating { display: flex; align-items: center; }
-.stars { color: gold; font-size: 2rem; cursor: pointer; }
-.comments { margin-top: 2rem; }
-.comment { background: #333; padding: 1rem; margin: 0.5rem 0; border-radius: 4px; }
-#addComment { display: block; width: 100%; padding: 0.5rem; margin: 1rem 0; background: #333; color: white; border: none; border-radius: 4px; }
-
-/* Modal */
-.modal { display: none; position: fixed; z-index: 20; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); }
-.modal-content { background: #333; margin: 15% auto; padding: 2rem; width: 80%; max-width: 400px; border-radius: 8px; animation: slideIn 0.3s; }
-@keyframes slideIn { from { transform: translateY(-50px); } to { transform: translateY(0); } }
-.close { float: right; font-size: 2rem; cursor: pointer; }
-form input { display: block; width: 100%; padding: 0.5rem; margin: 0.5rem 0; border-radius: 4px; border: none; }
-
-/* Loading */
-.loading { display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: rgba(0,0,0,0.8); padding: 1rem; border-radius: 4px; animation: spin 1s linear infinite; }
-@keyframes spin { 100% { transform: translate(-50%, -50%) rotate(360deg); } }
-
-/* Responsivo */
-@media (max-width: 768px) {
-    .hero h1 { font-size: 2rem; }
-    .movies-grid { grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); padding: 1rem; }
-    .trailer { height: 250px; }
+body {
+  font-family: Arial, sans-serif;
+  background: #0f0f0f;
+  color: #fff;
+  margin: 0;
 }
-@media (min-width: 1024px) {
-    .movies-grid { grid-template-columns: repeat(5, 1fr); }
+
+header {
+  background: #111;
+  padding: 15px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+nav a {
+  color: #fff;
+  margin-right: 10px;
+  text-decoration: none;
+}
+
+h1, h2 {
+  margin: 20px;
+}
+
+.movie-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 20px;
+  padding: 20px;
+}
+
+.movie-card {
+  cursor: pointer;
+  text-align: center;
+  transition: transform 0.3s;
+}
+
+.movie-card img {
+  width: 100%;
+  border-radius: 10px;
+}
+
+.movie-card:hover {
+  transform: scale(1.05);
+}
+
+.poster-large {
+  width: 300px;
+  float: left;
+  margin-right: 20px;
+  border-radius: 10px;
+}
+
+#comments-section {
+  clear: both;
+  margin: 20px;
+}
+
+.comment {
+  background: #222;
+  padding: 10px;
+  margin: 5px 0;
+  border-radius: 6px;
+}
+
+button {
+  background: #e50914;
+  color: white;
+  padding: 8px 12px;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+button:hover {
+  background: #f40612;
+}
+
+textarea {
+  width: 100%;
+  height: 60px;
+  margin-bottom: 10px;
+  border-radius: 5px;
+  border: none;
+  padding: 10px;
 }

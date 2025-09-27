@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Detalhes do Filme</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <a href="index.html">⬅ Voltar</a>
+    <h1 id="movie-title"></h1>
+  </header>
+
+  <main id="movie-details"></main>
+
+  <section id="comments-section">
+    <h3>Comentários</h3>
+    <div id="comments-list"></div>
+
+    <div id="comment-form" style="display:none;">
+      <textarea id="comment-text" placeholder="Deixe sua opinião..."></textarea>
+      <button onclick="addComment()">Enviar</button>
+    </div>
+    <p id="login-message">Faça login para comentar.</p>
+  </section>
+
+  <script src="movies.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
