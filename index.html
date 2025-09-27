@@ -1,49 +1,17 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Netflix BR - Filmes Brasileiros</title>
-    <link rel="stylesheet" href="styles.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Netflix BR</title>
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <header>
-        <nav>
-            <div class="logo">NETFLIX BR</div>
-            <div class="auth">
-                <button id="loginBtn" onclick="showLogin()">Login</button>
-                <button id="logoutBtn" onclick="logout()" style="display:none;">Logout</button>
-            </div>
-        </nav>
-    </header>
-
-    <main id="mainContent">
-        <section class="hero">
-            <h1>Filmes Brasileiros Clássicos</h1>
-            <p>Explore 10 obras icônicas do cinema nacional.</p>
-        </section>
-
-        <section class="movies-grid">
-            <!-- Filmes serão carregados via JS -->
-        </section>
-    </main>
-
-    <!-- Modal de Login -->
-    <div id="loginModal" class="modal">
-        <div class="modal-content">
-            <span class="close" onclick="closeLogin()">&times;</span>
-            <h2>Login / Cadastro</h2>
-            <form id="loginForm">
-                <input type="email" id="email" placeholder="Email" required>
-                <input type="password" id="password" placeholder="Senha" required>
-                <button type="submit">Entrar</button>
-            </form>
-        </div>
-    </div>
-
-    <!-- Overlay para loading -->
-    <div id="loading" class="loading">Carregando...</div>
-
-    <script src="script.js"></script>
+<header>
+    <h1>Netflix BR</h1>
+    <a href="login.html">Login</a>
+</header>
+<main id="movies-container"></main>
+<script src="script.js"></script>
 </body>
 </html>
