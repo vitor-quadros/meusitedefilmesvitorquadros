@@ -1,205 +1,49 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Cinema Brasil</title>
-  <style>
-    body { font-family: Arial, sans-serif; margin: 0; background: #f5f5f5; }
-    header { background: #222; color: #fff; padding: 1rem; text-align: center; }
-    .filmes { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 1rem; padding: 1rem; }
-    .filme { background: #fff; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 5px rgba(0,0,0,0.2); cursor: pointer; transition: transform 0.2s; }
-    .filme:hover { transform: scale(1.05); }
-    .filme img { width: 100%; height: 270px; object-fit: cover; }
-    .filme h3 { margin: 0; padding: 0.5rem; font-size: 1rem; text-align: center; }
-    #detalhes { display: none; padding: 1rem; }
-    #detalhes img { width: 200px; float: left; margin-right: 1rem; }
-    #login { padding: 1rem; background: #eee; }
-    #login button { margin-right: 5px; }
-    .comentarios { margin-top: 1rem; clear: both; }
-    .comentario { background: #fff; border-radius: 5px; padding: 0.5rem; margin-bottom: 0.5rem; }
-    .comentario button { margin-left: 5px; font-size: 0.8rem; }
-    .stars span { font-size: 1.5rem; cursor: pointer; color: #ccc; }
-    .stars span.selecionada { color: gold; }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Netflix BR - Filmes Brasileiros</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <header>
-    <h1>Cinema Brasil</h1>
-  </header>
+    <header>
+        <nav>
+            <div class="logo">NETFLIX BR</div>
+            <div class="auth">
+                <button id="loginBtn" onclick="showLogin()">Login</button>
+                <button id="logoutBtn" onclick="logout()" style="display:none;">Logout</button>
+            </div>
+        </nav>
+    </header>
 
-  <section id="login">
-    <h2>Login</h2>
-    <input type="text" id="username" placeholder="Usuário" />
-    <input type="password" id="password" placeholder="Senha" />
-    <button onclick="register()">Registrar</button>
-    <button onclick="login()">Login</button>
-    <button onclick="logout()">Logout</button>
-    <p id="userInfo"></p>
-  </section>
+    <main id="mainContent">
+        <section class="hero">
+            <h1>Filmes Brasileiros Clássicos</h1>
+            <p>Explore 10 obras icônicas do cinema nacional.</p>
+        </section>
 
-  <section class="filmes" id="filmes"></section>
+        <section class="movies-grid">
+            <!-- Filmes serão carregados via JS -->
+        </section>
+    </main>
 
-  <section id="detalhes"></section>
-
-  <script>
-    const filmes = [
-      { titulo: "Central do Brasil", descricao: "Uma professora aposentada ajuda um menino a procurar o pai que nunca conheceu.", elenco: "Fernanda Montenegro, Vinícius de Oliveira", poster: "https://upload.wikimedia.org/wikipedia/pt/f/f4/Central_do_Brasil_poster.jpg", trailer: "https://www.youtube.com/embed/FR3hK8rTnFg" },
-      { titulo: "Cidade de Deus", descricao: "Baseado em fatos reais, acompanha a ascensão do crime organizado na Cidade de Deus, no Rio de Janeiro.", elenco: "Alexandre Rodrigues, Leandro Firmino", poster: "https://upload.wikimedia.org/wikipedia/pt/1/1e/Cidade_de_Deus_poster.jpg", trailer: "https://www.youtube.com/embed/dcUOO4Itgmw" },
-      { titulo: "Tropa de Elite", descricao: "O Capitão Nascimento lidera operações do BOPE no Rio de Janeiro.", elenco: "Wagner Moura, André Ramiro", poster: "https://upload.wikimedia.org/wikipedia/pt/1/1b/Tropa_de_Elite_2.jpg", trailer: "https://www.youtube.com/embed/OtTfxG8sp5c" },
-      { titulo: "O Auto da Compadecida", descricao: "Baseado na obra de Ariano Suassuna, mistura humor e crítica social no sertão nordestino.", elenco: "Matheus Nachtergaele, Selton Mello, Fernanda Montenegro", poster: "https://upload.wikimedia.org/wikipedia/pt/1/16/O_auto_da_compadecida.jpg", trailer: "https://www.youtube.com/embed/x7ISUk6Y35Q" },
-      { titulo: "Bacurau", descricao: "Moradores de um vilarejo no sertão brasileiro descobrem que sua cidade sumiu dos mapas.", elenco: "Sônia Braga, Udo Kier, Bárbara Colen", poster: "https://upload.wikimedia.org/wikipedia/pt/c/c4/BacurauPoster.jpg", trailer: "https://www.youtube.com/embed/jb8Bsoe41Fw" },
-      { titulo: "Estômago", descricao: "A história de Raimundo Nonato, que descobre ter talento excepcional para a culinária.", elenco: "João Miguel, Fabiula Nascimento", poster: "https://upload.wikimedia.org/wikipedia/pt/3/3a/Estomago.jpg", trailer: "https://www.youtube.com/embed/88OaoJ_6bHg" },
-      { titulo: "Que Horas Ela Volta?", descricao: "A chegada da filha de uma empregada doméstica em São Paulo expõe tensões sociais.", elenco: "Regina Casé, Camila Márdila", poster: "https://upload.wikimedia.org/wikipedia/pt/5/51/Que_Horas_Ela_Volta.jpg", trailer: "https://www.youtube.com/embed/DztE4YAlxC0" },
-      { titulo: "Carandiru", descricao: "Baseado nas memórias do médico Dráuzio Varella no presídio de Carandiru.", elenco: "Luiz Carlos Vasconcelos, Rodrigo Santoro", poster: "https://upload.wikimedia.org/wikipedia/pt/9/9f/Carandiru.jpg", trailer: "https://www.youtube.com/embed/9oZ5H2h7tqI" },
-      { titulo: "Tropa de Elite 2", descricao: "Agora coronel, Nascimento enfrenta novos inimigos dentro do sistema político e policial.", elenco: "Wagner Moura, Irandhir Santos", poster: "https://upload.wikimedia.org/wikipedia/pt/1/14/Elitedetrois.jpg", trailer: "https://www.youtube.com/embed/Qj9rgU1XU1Q" },
-      { titulo: "Aquarius", descricao: "Clara, uma aposentada, resiste à pressão de construtoras para vender seu apartamento.", elenco: "Sônia Braga, Humberto Carrão", poster: "https://upload.wikimedia.org/wikipedia/pt/0/0d/Aquarius_poster.jpg", trailer: "https://www.youtube.com/embed/jmMLhDKYVzM" }
-    ];
-
-    const filmesDiv = document.getElementById('filmes');
-    filmes.forEach((f, i) => {
-      filmesDiv.innerHTML += `
-        <div class="filme" onclick="abrirDetalhes(${i})">
-          <img src="${f.poster}" alt="${f.titulo}">
-          <h3>${f.titulo}</h3>
-        </div>`;
-    });
-
-    function abrirDetalhes(index) {
-      const filme = filmes[index];
-      const detalhes = document.getElementById("detalhes");
-      detalhes.style.display = "block";
-      detalhes.innerHTML = `
-        <h2>${filme.titulo}</h2>
-        <img src="${filme.poster}" alt="${filme.titulo}">
-        <p><b>Descrição:</b> ${filme.descricao}</p>
-        <p><b>Elenco:</b> ${filme.elenco}</p>
-        ${filme.trailer ? `<iframe width="560" height="315" src="${filme.trailer}" frameborder="0" allowfullscreen></iframe>` : ''}
-        <div class="avaliacao">
-          <h3>Avaliação</h3>
-          <div class="stars" id="stars"></div>
-          <p id="media"></p>
+    <!-- Modal de Login -->
+    <div id="loginModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeLogin()">&times;</span>
+            <h2>Login / Cadastro</h2>
+            <form id="loginForm">
+                <input type="email" id="email" placeholder="Email" required>
+                <input type="password" id="password" placeholder="Senha" required>
+                <button type="submit">Entrar</button>
+            </form>
         </div>
-        <div class="comentarios">
-          <h3>Comentários</h3>
-          <div id="listaComentarios"></div>
-          <textarea id="novoComentario" placeholder="Deixe seu comentário..."></textarea><br>
-          <button onclick="adicionarComentario('${filme.titulo}')">Enviar</button>
-        </div>
-      `;
-      renderStars(filme.titulo);
-      carregarComentarios(filme.titulo);
-    }
+    </div>
 
-    function renderStars(filmeTitulo) {
-      const starsDiv = document.getElementById('stars');
-      starsDiv.innerHTML = '';
-      let avaliacoes = JSON.parse(localStorage.getItem('avaliacoes_'+filmeTitulo) || '{}');
-      const user = localStorage.getItem('loggedUser');
-      const notaUser = user && avaliacoes[user] ? avaliacoes[user] : 0;
+    <!-- Overlay para loading -->
+    <div id="loading" class="loading">Carregando...</div>
 
-      for(let i=1; i<=5; i++) {
-        const span = document.createElement('span');
-        span.innerHTML = '★';
-        if(i <= notaUser) span.classList.add('selecionada');
-        span.onclick = () => avaliar(filmeTitulo, i);
-        starsDiv.appendChild(span);
-      }
-      atualizarMedia(filmeTitulo);
-    }
-
-    function avaliar(filmeTitulo, nota) {
-      const user = localStorage.getItem('loggedUser');
-      if(!user) { alert('Faça login para avaliar'); return; }
-      let avaliacoes = JSON.parse(localStorage.getItem('avaliacoes_'+filmeTitulo) || '{}');
-      avaliacoes[user] = nota;
-      localStorage.setItem('avaliacoes_'+filmeTitulo, JSON.stringify(avaliacoes));
-      renderStars(filmeTitulo);
-    }
-
-    function atualizarMedia(filmeTitulo) {
-      let avaliacoes = JSON.parse(localStorage.getItem('avaliacoes_'+filmeTitulo) || '{}');
-      const notas = Object.values(avaliacoes);
-      let media = 0;
-      if(notas.length > 0) media = notas.reduce((a,b)=>a+b,0)/notas.length;
-      document.getElementById('media').innerText = notas.length > 0 ? `Média: ${media.toFixed(1)} (${notas.length} votos)` : 'Ainda sem avaliações';
-    }
-
-    function register() {
-      const user = document.getElementById('username').value;
-      const pass = document.getElementById('password').value;
-      if(localStorage.getItem(user)) { alert('Usuário já existe'); return; }
-      localStorage.setItem(user, pass);
-      alert('Usuário registrado!');
-    }
-
-    function login() {
-      const user = document.getElementById('username').value;
-      const pass = document.getElementById('password').value;
-      if(localStorage.getItem(user) === pass) {
-        localStorage.setItem('loggedUser', user);
-        document.getElementById('userInfo').innerText = 'Logado como ' + user;
-      } else {
-        alert('Usuário ou senha incorretos');
-      }
-    }
-
-    function logout() {
-      localStorage.removeItem('loggedUser');
-      document.getElementById('userInfo').innerText = 'Você saiu da conta.';
-    }
-
-    function adicionarComentario(filmeTitulo) {
-      const user = localStorage.getItem('loggedUser');
-      if(!user) { alert('Faça login para comentar'); return; }
-      const texto = document.getElementById('novoComentario').value;
-      if(texto.trim() === '') return;
-      let comentarios = JSON.parse(localStorage.getItem('comentarios_'+filmeTitulo) || '[]');
-      comentarios.push({user, texto});
-      localStorage.setItem('comentarios_'+filmeTitulo, JSON.stringify(comentarios));
-      document.getElementById('novoComentario').value = '';
-      carregarComentarios(filmeTitulo);
-    }
-
-    function carregarComentarios(filmeTitulo) {
-      const comentarios = JSON.parse(localStorage.getItem('comentarios_'+filmeTitulo) || '[]');
-      const lista = document.getElementById('listaComentarios');
-      lista.innerHTML = '';
-      const user = localStorage.getItem('loggedUser');
-      comentarios.forEach((c, index) => {
-        const div = document.createElement('div');
-        div.className = 'comentario';
-        div.innerText = c.user + ': ' + c.texto;
-        if(user === c.user) {
-          const btnEditar = document.createElement('button');
-          btnEditar.innerText = 'Editar';
-          btnEditar.onclick = () => editarComentario(filmeTitulo, index);
-          const btnExcluir = document.createElement('button');
-          btnExcluir.innerText = 'Excluir';
-          btnExcluir.onclick = () => excluirComentario(filmeTitulo, index);
-          div.appendChild(btnEditar);
-          div.appendChild(btnExcluir);
-        }
-        lista.appendChild(div);
-      });
-    }
-
-    function editarComentario(filmeTitulo, index) {
-      let comentarios = JSON.parse(localStorage.getItem('comentarios_'+filmeTitulo) || '[]');
-      const novoTexto = prompt('Edite seu comentário:', comentarios[index].texto);
-      if(novoTexto !== null && novoTexto.trim() !== '') {
-        comentarios[index].texto = novoTexto;
-        localStorage.setItem('comentarios_'+filmeTitulo, JSON.stringify(comentarios));
-        carregarComentarios(filmeTitulo);
-      }
-    }
-
-    function excluirComentario(filmeTitulo, index) {
-      let comentarios = JSON.parse(localStorage.getItem('comentarios_'+filmeTitulo) || '[]');
-      comentarios.splice(index, 1);
-      localStorage.setItem('comentarios_'+filmeTitulo, JSON.stringify(comentarios));
-      carregarComentarios(filmeTitulo);
-    }
-  </script>
+    <script src="script.js"></script>
 </body>
 </html>
