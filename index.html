@@ -1,0 +1,219 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Carta Interativa pra Você 💖</title>
+  <style>
+    :root{--pink:#ff6fa3;--soft:#ffeef6;--white:#ffffff;--card:#ffffff;--glass:rgba(255,255,255,0.12)}
+    *{box-sizing:border-box;font-family:Inter, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial}
+    body{margin:0;min-height:100vh;background:linear-gradient(140deg,#fce7f3 0%, #fff 50%);display:flex;align-items:center;justify-content:center;padding:30px;position:relative}
+    .wrap{width:980px;max-width:96%;background:linear-gradient(180deg,rgba(255,255,255,0.90), rgba(255,255,255,0.85));border-radius:18px;box-shadow:0 10px 30px rgba(0,0,0,0.12);overflow:hidden;display:grid;grid-template-columns:400px 1fr;gap:0}
+    .left{padding:28px;background:linear-gradient(180deg,var(--soft),#fff);display:flex;flex-direction:column;align-items:center;justify-content:flex-start}
+    .avatar{width:160px;height:160px;border-radius:50%;background:linear-gradient(135deg,var(--pink),#ff9ab8);display:flex;align-items:center;justify-content:center;color:var(--white);font-size:36px;font-weight:700;box-shadow:0 8px 24px rgba(255,111,155,0.18)}
+    h1{margin:18px 0 8px;font-size:20px;color:#333}
+    p.lead{margin:0 0 16px;color:#6b6b6b;text-align:center}
+    .card{width:100%;background:var(--card);border-radius:12px;padding:12px;margin-bottom:12px;box-shadow:0 6px 18px rgba(16,24,40,0.04)}
+    .messages{height:240px;overflow:auto;padding:12px;border-radius:10px;background:linear-gradient(180deg, rgba(255,245,251,0.9), rgba(255,255,255,0.95));width:100%}
+    .msg{padding:10px 12px;border-radius:12px;max-width:78%;margin-bottom:10px}
+    .msg.me{background:linear-gradient(90deg,#ffe1ef,#ffd6ec);align-self:flex-end;margin-left:auto}
+    .msg.her{background:linear-gradient(90deg,#fff,#fff2f7);}
+    .small{font-size:13px;color:#666;margin-top:6px}
+    .right{padding:28px}
+    .section-title{display:flex;align-items:center;justify-content:space-between}
+    .section-title h2{margin:0;font-size:18px}
+    .question-list{margin-top:14px;display:grid;gap:12px}
+    .question{display:flex;flex-direction:column;gap:8px}
+    label{font-size:14px;color:#444}
+    input[type="text"], textarea{padding:10px;border-radius:10px;border:1px solid #e9e6ef;font-size:14px}
+    textarea{min-height:88px}
+    .controls{display:flex;gap:8px;margin-top:8px}
+    button{padding:10px 14px;border-radius:10px;border:0;cursor:pointer;background:var(--pink);color:white;font-weight:700}
+    button.secondary{background:transparent;color:var(--pink);border:2px solid var(--pink);font-weight:700}
+    .result{margin-top:18px;padding:12px;border-radius:12px;background:linear-gradient(180deg,#fff,#fffaf5);min-height:80px}
+    .bottom-row{display:flex;gap:8px;align-items:center;margin-top:12px}
+    .heart-float{position:absolute;font-size:24px;animation:floatUp 2s linear forwards;pointer-events:none;}
+    @keyframes floatUp{0%{opacity:1;transform:translateY(0);}100%{opacity:0;transform:translateY(-120px) scale(1.5);}}
+    @media (max-width:920px){.wrap{grid-template-columns:1fr; padding-bottom:18px}.left{order:2}}
+  </style>
+</head>
+<body>
+  <main class="wrap" role="main">
+    <aside class="left">
+      <div class="avatar" id="avatar">EU</div>
+      <h1 id="title">Uma carta pra você</h1>
+      <p class="lead">Um espacinho só nosso pra lembrar o quanto te amo 💕</p>
+
+      <div class="card">
+        <div class="messages" id="messages">
+          <div class="msg her">Oi amor! Abri esse site pra te lembrar que você é o caos mais lindo da minha vida 😘</div>
+          <div class="msg me">E eu ainda lembro direitinho de como começou tudo isso… 💞</div>
+        </div>
+        <div style="display:flex;gap:8px;margin-top:8px">
+          <input id="newMsg" type="text" placeholder="Manda um recadinho fofo aqui..." style="flex:1;padding:10px;border-radius:10px;border:1px solid #eee" />
+          <button id="sendMsg">Enviar</button>
+        </div>
+        <div class="small">As mensagens ficam guardadas no seu navegador (ninguém vai ver 😉)</div>
+      </div>
+
+      <div class="card">
+        <h3 style="margin:0 0 10px 0">Nossas lembranças favoritas 💖</h3>
+        <ul id="memList" style="padding-left:18px;margin:0;color:#444"></ul>
+        <div style="margin-top:10px;display:flex;gap:8px">
+          <input id="memInput" type="text" placeholder="Adicionar momento marcante (ex: nosso primeiro beijo 💋)" style="flex:1;padding:8px;border-radius:8px;border:1px solid #eee" />
+          <button id="addMem" class="secondary">Adicionar</button>
+        </div>
+      </div>
+
+    </aside>
+
+    <section class="right">
+      <div class="section-title">
+        <h2>Perguntas sobre a gente 😍</h2>
+        <div class="small">Responde com o coração (e um pouquinho de zoeira 😜)</div>
+      </div>
+
+      <div class="question-list" id="questions">
+        <div class="card question">
+          <label for="q1">1) Onde foi aquele primeiro encontro que te fez pensar “ih, me lasquei”? 😅</label>
+          <input id="q1" type="text" placeholder="Ex: no cinema, na praça, no lanche..." />
+        </div>
+
+        <div class="card question">
+          <label for="q2">2) Se a gente fosse um casal de filme, qual seria o título da nossa história? 🎬💘</label>
+          <input id="q2" type="text" placeholder="Ex: Amor & Risadas, Loucos Apaixonados..." />
+        </div>
+
+        <div class="card question">
+          <label for="q3">3) Qual é o momento que sempre te faz sorrir quando pensa na gente? 🥰</label>
+          <textarea id="q3" placeholder="Conta aquele momento fofo ou engraçado"></textarea>
+        </div>
+
+        <div class="card question">
+          <label for="q4">4) Se eu fosse um doce, qual eu seria (e por quê)? 🍫😋</label>
+          <input id="q4" type="text" placeholder="Ex: brigadeiro porque é impossível resistir" />
+        </div>
+
+        <div style="display:flex;gap:10px">
+          <button id="showResult">Gerar mensagem de amor 💌</button>
+          <button id="clear" class="secondary">Limpar respostas</button>
+        </div>
+
+        <div class="result" id="result">Sua mensagem aparecerá aqui depois que responder as perguntas 💞</div>
+
+        <div class="card" style="display:flex;flex-direction:column">
+          <label for="themeName">Quer dar um nome fofo pro título?</label>
+          <input id="themeName" type="text" placeholder="Ex: Pra minha coisa linda 💖" />
+          <div class="bottom-row">
+            <button id="saveAll">Salvar tudo</button>
+            <button id="loadAll" class="secondary">Carregar salvo</button>
+            <button id="download" class="secondary">Baixar HTML</button>
+          </div>
+        </div>
+
+      </div>
+      <button id="surpriseBtn" style="display:none;margin-top:20px;padding:12px 16px;font-size:16px;border-radius:12px;border:none;background:var(--pink);color:white;font-weight:700;cursor:pointer">💘 Clique aqui se me ama 💘</button>
+    </section>
+  </main>
+
+  <script>
+    const $ = id => document.getElementById(id);
+    const messages = $('messages');
+    const newMsg = $('newMsg');
+    const sendMsg = $('sendMsg');
+    const memList = $('memList');
+    const memInput = $('memInput');
+    const addMem = $('addMem');
+    const surpriseBtn = $('surpriseBtn');
+
+    const interactions = {
+      'te amo':'Ain, eu sabia que você me ama 😍',
+      'sempre':'Sempre mesmo? Porque eu nunca canso de você 😚',
+      'claro':'Hahaha, sabia! Você é muito previsível e fofa 😍',
+      'você':'Eu? Awnn, agora eu fiquei todo bobo 😳💘',
+      'nós dois':'A combinação perfeita 💑 ninguém supera a gente! 💞'
+    };
+
+    function showFloatingHeart(){
+      const heart = document.createElement('div');
+      heart.textContent = '💗';
+      heart.className = 'heart-float';
+      heart.style.left = Math.random()*90 + '%';
+      document.body.appendChild(heart);
+      setTimeout(()=>{ document.body.removeChild(heart); },2000);
+    }
+
+    function checkInteractions(){
+      const text = [$('q1').value,$('q2').value,$('q3').value,$('q4').value].join(' ').toLowerCase();
+      Object.keys(interactions).forEach(k=>{
+        if(text.includes(k)){
+          appendMessage(interactions[k],'her');
+          showFloatingHeart();
+        }
+      });
+    }
+
+    function appendMessage(text, cls='her'){
+      const d = document.createElement('div'); d.className = 'msg '+(cls==='me'? 'me':'her'); d.textContent = text; messages.appendChild(d); messages.scrollTop = messages.scrollHeight;
+    }
+
+    sendMsg.addEventListener('click', ()=>{
+      const v = newMsg.value.trim(); if(!v) return; appendMessage(v,'me'); newMsg.value=''; saveToStorage(); checkInteractions();
+    });
+    newMsg.addEventListener('keydown', e=>{ if(e.key==='Enter'){ sendMsg.click(); }});
+
+    function renderMem(){ memList.innerHTML=''; const arr = JSON.parse(localStorage.getItem('mems')||'[]'); arr.forEach((m,i)=>{ const li = document.createElement('li'); li.textContent = m + ' '; const btn = document.createElement('button'); btn.textContent='x'; btn.style.marginLeft='8px'; btn.style.border='0'; btn.style.background='transparent'; btn.style.color='#e04b7a'; btn.addEventListener('click', ()=>{ arr.splice(i,1); localStorage.setItem('mems', JSON.stringify(arr)); renderMem(); }); li.appendChild(btn); memList.appendChild(li); }); }
+    addMem.addEventListener('click', ()=>{ const v = memInput.value.trim(); if(!v) return; const arr = JSON.parse(localStorage.getItem('mems')||'[]'); arr.push(v); localStorage.setItem('mems', JSON.stringify(arr)); memInput.value=''; renderMem(); saveToStorage(); });
+
+    const showResult = $('showResult');
+    const result = $('result');
+    const clear = $('clear');
+    const themeName = $('themeName');
+
+    function buildLoveMessage(){
+      const t = themeName.value.trim() || 'Uma mensagem pra você';
+      const a = $('q1').value.trim();
+      const b = $('q2').value.trim();
+      const c = $('q3').value.trim();
+      const d = $('q4').value.trim();
+      let html = `<strong>${escapeHtml(t)}</strong><br/><br/>`;
+      html += `Amor, desde aquele primeiro encontro ${a || 'que parece ter saído de um filme'}, eu já sabia que você ia bagunçar minha cabeça (do jeito bom 😍). `;
+      if(b) html += `Se a nossa história fosse um filme, com certeza se chamaria "${escapeHtml(b)}" — e eu assistiria mil vezes! 🎬 `;
+      if(c) html += `Toda vez que penso em ${escapeHtml(c)}, eu sorrio feito bobo(a). 💕 `;
+      if(d) html += `E olha, se eu fosse um doce, ser comparado a um(a) ${escapeHtml(d)} é o maior elogio do mundo! 🍫 `;
+      html += `<br/><br/>Você é meu caos favorito, minha calmaria e minha melhor risada. Te amo mais do que brigadeiro. 💘`;
+      result.innerHTML = html;
+      checkShowSurprise();
+    }
+
+    function checkShowSurprise(){
+      const filled = ['q1','q2','q3','q4'].every(id=>$(id).value.trim() !== '');
+      if(filled) surpriseBtn.style.display = 'block';
+    }
+
+    surpriseBtn.addEventListener('click', ()=>{
+      appendMessage('Eu te amo mais 💗 pra sempre e um pouquinho mais!','her');
+      for(let i=0;i<15;i++) showFloatingHeart();
+      surpriseBtn.style.display='none';
+    });
+
+    showResult.addEventListener('click', ()=>{ buildLoveMessage(); saveToStorage(); checkInteractions(); });
+    clear.addEventListener('click', ()=>{ ['q1','q2','q3','q4','themeName'].forEach(k=>$(k).value=''); result.innerHTML='Sua mensagem aparecerá aqui depois que responder as perguntas 💞'; localStorage.removeItem('form'); surpriseBtn.style.display='none'; });
+
+    function saveToStorage(){
+      const state = {
+        messages: Array.from(messages.querySelectorAll('.msg')).map(n=>({text:n.textContent,cls:n.classList.contains('me')? 'me':'her'})),
+        mems: JSON.parse(localStorage.getItem('mems')||'[]'),
+        form: {q1:$('q1').value, q2:$('q2').value, q3:$('q3').value, q4:$('q4').value, themeName:themeName.value}
+      };
+      localStorage.setItem('love_app', JSON.stringify(state));
+    }
+
+    function loadFromStorage(){
+      const state = JSON.parse(localStorage.getItem('love_app')||'null');
+      if(!state) return;
+      messages.innerHTML
+      state.messages.forEach(m=>appendMessage(m.text,m.cls));
+    }
+      
+      
